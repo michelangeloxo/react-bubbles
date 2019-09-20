@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axiosWithAuth from '../utilities/axiosWithAuth';
+import AddColor from "./AddColor";
 
 const initialColor = {
   color: "",
@@ -10,6 +11,7 @@ const ColorList = ({ colors, updateColors }) => {
   console.log(colors);
   const [editing, setEditing] = useState(false);
   const [colorToEdit, setColorToEdit] = useState(initialColor);
+  const [friendsList, setFriendsList] = useState([]);
 
   const editColor = color => {
     setEditing(true);
@@ -45,6 +47,12 @@ const ColorList = ({ colors, updateColors }) => {
     .catch(err => console.log(err.response));
   
   };
+
+  const addColor = huh => {
+    axiosWithAuth().post('http://localhost:5000/api/colors', huh)
+    .then(res => setFriendsList(res.data))
+    .catch(err => console.log(err.response));
+}
 
   return (
     <div className="colors-wrap">
@@ -96,7 +104,15 @@ const ColorList = ({ colors, updateColors }) => {
         </form>
       )}
       <div className="spacer" />
-      {/* stretch - build another form here to add a color */}
+      
+
+      
+<AddColor addColor={addColor} />
+{/* // {friendsList.map( => {return <div key={huh.id}>{huh.name}</div>
+// })} */}
+
+
+     
     </div>
   );
 };
